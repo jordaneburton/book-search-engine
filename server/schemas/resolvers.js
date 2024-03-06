@@ -41,7 +41,7 @@ const resolvers = {
             { _id: context.user._id },
             { $addToSet: { savedBooks: input } }, // FIX THIS 
             { new: true, runValidators: true }
-        ).select('-password');
+        );
 
         if (!updatedUser) {
             throw AuthenticationError;
@@ -53,7 +53,7 @@ const resolvers = {
             { _id: context.user._id },
             { $pull: { savedBooks: { bookId: bookId } } },
             { new: true }
-          ).select('-password');
+          );
           if (!updatedUser) {
             throw AuthenticationError
           }
