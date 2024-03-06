@@ -4,16 +4,12 @@ const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    me: async (parent, { user }) => {
-        const foundUser = await User.findOne({
-            $or: [{ _id: user._id }, { username }],
-        })
-
-        if (!foundUser) {
-            throw AuthenticationError;
+    me: async (parent, args, context) => {
+        if (context.user) {
+          return Profile.findOne({ _id: context.user._id });
         }
-        return foundUser;
-    }
+        throw AuthenticationError;
+      },
   },
 
   Mutation: {
@@ -40,25 +36,24 @@ const resolvers = {
         const token = signToken(user);
         return { token, user };
     },
-    saveBook: async (parent, { input }) => { // FIX THIS
+    saveBook: async (parent, { input }, context) => { // FIX THIS
         const updatedUser = await User.findOneAndUpdate(
-            { _id: user._id },
+            { _id: context.user._id },
             { $addToSet: { savedBooks: input } }, // FIX THIS 
-            // exclude password
             { new: true, runValidators: true }
-        );
+        ).select('-password');
 
         if (!updatedUser) {
             throw AuthenticationError;
         }
         return updatedUser;
     },
-    removeBook: async (parent, { bookId }) => {
+    removeBook: async (parent, { bookId }, context) => {
         const updatedUser = await User.findOneAndUpdate(
-            { _id: user._id },
+            { _id: context.user._id },
             { $pull: { savedBooks: { bookId: bookId } } },
             { new: true }
-          );
+          ).select('-password');
           if (!updatedUser) {
             throw AuthenticationError
           }
