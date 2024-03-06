@@ -4,7 +4,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
-import { loginUser } from '../utils/API'; // OLD CODE. NOT USED
+// import { loginUser } from '../utils/API';  OLD CODE. NOT USED
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
@@ -40,7 +40,7 @@ const LoginForm = () => {
       }
 
       // const { token, user } = await response.json();
-      // console.log(user);
+      console.log(data.login.user);
       Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
