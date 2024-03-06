@@ -18,7 +18,7 @@ const server = new ApolloServer({
 const startApolloServer = async () => {
   await server.start();
 
-  app.use(express.urlencoded({ extended: true })); // CHANGE TRUE TO FALSE
+  app.use(express.urlencoded({ extended: false })); // CHANGE TRUE TO FALSE
   app.use(express.json());
 
   app.use('/graphql', expressMiddleware(server, {
