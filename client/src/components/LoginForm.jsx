@@ -40,7 +40,7 @@ const LoginForm = () => {
       // }
 
       // const { token, user } = await response.json();
-      console.log(data.login.user);
+      // console.log(data.login.user);
       Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
@@ -48,7 +48,6 @@ const LoginForm = () => {
     }
 
     setUserFormData({
-      username: '',
       email: '',
       password: '',
     });

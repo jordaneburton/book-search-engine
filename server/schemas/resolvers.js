@@ -13,8 +13,8 @@ const resolvers = {
   },
 
   Mutation: {
-    login: async (parent, { username, email, password }) => {
-        const user = await User.findOne({ $or: [{ username }, { email }] });
+    login: async (parent, { email, password }) => {
+        const user = await User.findOne({ email });
         if (!user) {
             throw AuthenticationError;
         }
@@ -27,8 +27,8 @@ const resolvers = {
         const token = signToken(user);
         return { token, user };
     },
-    addUser: async (parent, args) => {
-        const user = await User.create(...args);
+    addUser: async (parent, { username, email, password}) => {
+        const user = await User.create({ username, email, password });
 
         if (!user) {
             throw AuthenticationError;
@@ -39,7 +39,7 @@ const resolvers = {
     saveBook: async (parent, { input }, context) => { // FIX THIS
         const updatedUser = await User.findOneAndUpdate(
             { _id: context.user._id },
-            { $addToSet: { savedBooks: input } }, // FIX THIS 
+            { $addToSet: { savedBooks: {...input} } }, // FIX THIS 
             { new: true, runValidators: true }
         );
 

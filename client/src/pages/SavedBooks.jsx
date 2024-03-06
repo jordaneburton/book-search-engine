@@ -22,7 +22,7 @@ const SavedBooks = () => {
   // const userDataLength = Object.keys(userData).length;
 
   const { loading, dataMe } = useQuery(QUERY_ME, {
-    variables: { username: userParam },
+    variables: { username },
   });
   setUserData(dataMe?.me || {});
 
