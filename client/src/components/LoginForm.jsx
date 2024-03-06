@@ -31,11 +31,11 @@ const LoginForm = () => {
 
     try {
       // const response = await loginUser(userFormData);
-      const { data } = await login({
+      const { error, data } = await login({
         variables: { ...userFormData }
       })
 
-      if (!data) {
+      if (error) {
         throw new Error('something went wrong!');
       }
 
